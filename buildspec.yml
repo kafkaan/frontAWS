@@ -7,6 +7,12 @@ phases:
   build:
     commands:
       - npm run build
+  post_build:
+    commands:
+    # sync the built files to s3 bucket and delete old
+      - aws s3 sync dist/ s3://kirby-frontend-frontend --delete
+      - aws cloudfront create-invalidation --distribution-id E18MUXS72TOMAW --paths "/*"
+
 
 artifacts:
   files:
